@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Dark Background -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+
+    <!-- Vibrant Node Connection Gradient -->
+    <linearGradient id="flow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+
+    <!-- Play Icon Gradient -->
+    <linearGradient id="play-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e"/>
+      <stop offset="100%" stop-color="#fb7185"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Tile (Reduced corner radius for maximum visible surface) -->
+  <rect width="512" height="512" rx="96" fill="url(#bg-grad)"/>
+
+  <!-- Thick Flow Connection Line -->
+  <path d="M 120 256 L 392 256" stroke="url(#flow-grad)" stroke-width="48" stroke-linecap="round"/>
+
+  <!-- Left Input Node -->
+  <circle cx="110" cy="256" r="60" fill="#0f172a" stroke="#06b6d4" stroke-width="24"/>
+  <circle cx="110" cy="256" r="20" fill="#06b6d4"/>
+
+  <!-- Right Output Node -->
+  <circle cx="402" cy="256" r="60" fill="#0f172a" stroke="#a855f7" stroke-width="24"/>
+  <circle cx="402" cy="256" r="20" fill="#a855f7"/>
+
+  <!-- Center Video/Hub Node -->
+  <circle cx="256" cy="256" r="110" fill="#1e1b4b" stroke="url(#flow-grad)" stroke-width="28"/>
+
+  <!-- Play Triangle (Scaled up for high visibility) -->
+  <polygon points="236,206 296,256 236,306" fill="url(#play-grad)"/>
+</svg>
