@@ -16,10 +16,22 @@ Drag and drop a video anywhere on the page, or pick it with the file input.
 ### A URL
 
 Paste either a direct link to a video file or the address of the page the
-video sits on, then press **Extract**. For a page, the app fetches the HTML
-and looks for the video in `<video>`/`<source>` tags, `og:video` meta tags,
-JSON-LD `contentUrl`, and any video URLs embedded in inline scripts. If it
-finds more than one, you pick which to read.
+video sits on, then press **Extract**. Dragging a link in from another tab
+does the same thing.
+
+For a page, the app fetches the HTML and looks for the video in:
+
+- `<video>` and `<source>` tags, including their `data-src` variants
+- `og:video`, `og:video:url`, `og:video:secure_url` and
+  `twitter:player:stream` meta tags, and `<link rel="video_src">`
+- JSON-LD `contentUrl` and `embedUrl`
+- `<a>` links pointing at a video file
+- any video URL left in the raw markup, including the `"\/"`-escaped form
+  that inline JSON usually carries
+
+Relative paths resolve against the page's `<base href>` when it declares one.
+If more than one candidate turns up, you pick which to read; those with a
+video file extension are listed first.
 
 Where the host supports HTTP range requests, only the few kilobytes MediaInfo
 actually needs are downloaded rather than the entire video. Hosts that don't
@@ -52,6 +64,29 @@ npm run preview  # serve the production build
 
 The build assumes it is served from `/comfyui_workflow/`. Set `BASE_PATH` to
 change that, e.g. `BASE_PATH=/ npm run build` for a domain root.
+
+### Tests
+
+```sh
+npx playwright install chromium   # once
+npm test
+```
+
+`npm test` builds the app, starts it alongside a local origin that imitates
+the sites the extractor has to read, and drives a real browser through 22
+checks: range-capable and range-ignoring hosts, CORS-blocked and relayed
+fetches, each page-scraping strategy above, `moov` at either end of the file,
+the candidate picker, junk input, and the local-file path.
+
+It needs **ffmpeg** on `PATH` (with `libx264` and `lavfi`) to build its
+fixtures on first run — a minimal build such as the one bundled with
+Playwright will not do. Point `FFMPEG` at another binary to override, and
+`npm run fixtures` to build them without running the suite. Fixtures land in
+`test/media/`, which is ignored.
+
+The fixtures embed the workflow the way ComfyUI's VideoHelperSuite does — an
+arbitrary mp4 metadata key written with `-movflags use_metadata_tags` — so
+the suite exercises the real extraction path rather than a stand-in.
 
 Deploys to GitHub Pages via `.github/workflows/deploy.yml` on every push to
 `main`. That workflow needs the repository's Pages source set to **GitHub
