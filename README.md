@@ -92,6 +92,13 @@ Deploys to GitHub Pages via `.github/workflows/deploy.yml` on every push to
 `main`. That workflow needs the repository's Pages source set to **GitHub
 Actions** (Settings → Pages) rather than a branch.
 
+## How it works
+
+[`ARCHITECTURE.md`](ARCHITECTURE.md) covers the module layout, the shared
+byte-source interface behind both input paths, how the CORS relay chain and
+HTTP range reader are built, and the non-obvious traps worth knowing before
+changing any of it.
+
 ## Credits
 
 Based on
